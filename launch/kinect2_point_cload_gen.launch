@@ -1,5 +1,22 @@
 <launch>
 
+  <arg name="base_name"         default="kinect2"/>
+  <arg name="machine"           default="localhost"/>
+  <arg name="respawn"           default="true"/>
+  <arg name="queue_size"        default="5"/>
+  <arg name="nodelet_manager"   default="$(arg base_name)"/>
+  <arg name="start_manager"     default="true"/>
+  <arg name="use_machine"       default="true"/>
+  <arg name="respawn"           default="true"/>
+  <arg name="use_nodelet"       default="true"/>
+  <arg name="output"            default="screen"/>
+
+  <machine name="localhost" address="localhost" if="$(arg use_machine)"/>
+
+  <node pkg="nodelet" type="nodelet" name="$(arg nodelet_manager)" args="manager"
+        if="$(arg start_manager)" machine="$(arg machine)" output="screen"/>
+
+
   <!-- sd point cloud (512 x 424) -->
   <node pkg="nodelet" type="nodelet" name="$(arg base_name)_points_xyzrgb_sd" machine="$(arg machine)"
         args="load depth_image_proc/point_cloud_xyzrgb $(arg nodelet_manager)" respawn="$(arg respawn)">
